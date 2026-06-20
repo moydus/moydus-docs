@@ -44,6 +44,7 @@ function AssistantSheetClient() {
     handleSubmit,
     isLoading,
     onClear,
+    sendMessage,
   } = useAssistant();
 
   const handleClose = useCallback(() => {
@@ -79,14 +80,24 @@ function AssistantSheetClient() {
       setShouldFocus(!isMobile);
     };
 
+    const handleSend = (e: Event) => {
+      const message = (e as CustomEvent<{ message: string }>).detail?.message;
+      if (!message) return;
+      setIsOpen(true);
+      setShouldFocus(false);
+      sendMessage(message);
+    };
+
     window.addEventListener(ASSISTANT_EVENTS.TOGGLE, handleToggle);
     window.addEventListener(ASSISTANT_EVENTS.OPEN, handleOpen);
     window.addEventListener(ASSISTANT_EVENTS.CLOSE, handleClose);
+    window.addEventListener(ASSISTANT_EVENTS.SEND, handleSend);
 
     return () => {
       window.removeEventListener(ASSISTANT_EVENTS.TOGGLE, handleToggle);
       window.removeEventListener(ASSISTANT_EVENTS.OPEN, handleOpen);
       window.removeEventListener(ASSISTANT_EVENTS.CLOSE, handleClose);
+      window.removeEventListener(ASSISTANT_EVENTS.SEND, handleSend);
     };
   }, [handleClose, isMobile]);
 

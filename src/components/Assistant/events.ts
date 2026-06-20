@@ -2,6 +2,7 @@ export const ASSISTANT_EVENTS = {
   TOGGLE: 'assistant:toggle',
   OPEN: 'assistant:open',
   CLOSE: 'assistant:close',
+  SEND: 'assistant:send',
 } as const;
 
 export function toggleAssistant() {
@@ -14,4 +15,8 @@ export function openAssistant() {
 
 export function closeAssistant() {
   window.dispatchEvent(new CustomEvent(ASSISTANT_EVENTS.CLOSE));
+}
+
+export function sendToAssistant(message: string) {
+  window.dispatchEvent(new CustomEvent(ASSISTANT_EVENTS.SEND, { detail: { message } }));
 }

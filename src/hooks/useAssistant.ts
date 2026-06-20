@@ -92,6 +92,30 @@ export const useAssistant = () => {
     });
   }, [input, isLoading, history, complete, setCompletion]);
 
+  const sendMessage = useCallback(async (text: string) => {
+    const trimmed = text.trim();
+    if (!trimmed || isLoading) return;
+
+    isClearedRef.current = false;
+    const userMessage = toUserMessage(trimmed);
+    const nextHistory = [...history, userMessage];
+    setHistory(nextHistory);
+    setInput('');
+    setCompletion('');
+
+    await complete(trimmed, {
+      body: {
+        messages: nextHistory.map((m) => ({
+          role: m.role,
+          content: m.parts
+            .filter((p) => p.type === 'text')
+            .map((p) => ('text' in p ? p.text : ''))
+            .join(''),
+        })),
+      },
+    });
+  }, [isLoading, history, complete, setCompletion]);
+
   useEffect(() => {
     if (!isLoading && completion && !isClearedRef.current) {
       setHistory((prev) => [...prev, toAssistantMessage(completion)]);
@@ -103,6 +127,7 @@ export const useAssistant = () => {
     input,
     status,
     handleSubmit,
+    sendMessage,
     setInput,
     messages,
     setMessages: setHistory,

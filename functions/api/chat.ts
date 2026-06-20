@@ -52,7 +52,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
         'You are a helpful documentation assistant. Answer questions clearly and concisely based on documentation topics.',
     };
 
-    const stream = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
+    const stream = await env.AI.run('@cf/meta/llama-3.1-8b-instruct-fp8', {
       messages: [systemMessage, ...messages],
       stream: true,
     });

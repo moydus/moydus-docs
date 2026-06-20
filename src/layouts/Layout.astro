@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import { AssistantSheet, AssistantProvider } from '../components/Assistant';
+import { MobileAskBar } from '../components/MobileAskBar';
 import '../styles/global.css';
 
 interface Props {
@@ -49,6 +50,7 @@ const fullTitle = title.includes('Moydus') ? title : `${title} | Moydus`;
       </div>
       <AssistantSheet client:only="react" transition:persist />
     </div>
+    <MobileAskBar client:only="react" />
   </body>
 </html>
 
