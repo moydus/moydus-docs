@@ -1,0 +1,3 @@
+# Cloudflare Pages redirect rules
+# 404 fallback
+/404 /404.html 404

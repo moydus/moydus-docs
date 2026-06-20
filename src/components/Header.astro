@@ -1,0 +1,153 @@
+---
+import type { TabInfo } from '@mintlify/astro/helpers';
+import { SearchBar } from './SearchBar';
+import { MobileActionButtons, MobileNavToggle } from './MobileHeaderActions';
+
+interface Props {
+  tabs: TabInfo[] | null;
+  pageTitle?: string;
+  groupName?: string;
+}
+
+const { tabs, pageTitle, groupName } = Astro.props;
+const usingTabs = tabs && tabs.length > 0;
+---
+
+<header id="navbar" class="z-30 fixed lg:sticky top-0 w-full">
+  <!-- Border overlay -->
+  <div class="z-10 absolute w-full h-full border-b border-gray-100 dark:border-gray-800 pointer-events-none"></div>
+  <!-- Background -->
+  <div class="z-0 absolute inset-0 bg-white/95 dark:bg-[#0e0e0f]/95 backdrop-blur pointer-events-none transition-colors"></div>
+
+  <div class="z-10 relative mx-auto max-w-8xl px-0 lg:px-5">
+    <div class="relative">
+
+      <!-- Main header row -->
+      <div class="flex items-center h-14 min-w-0 mx-4 lg:mx-0 lg:px-4">
+        <div class="h-full relative flex-1 flex items-center gap-x-4 min-w-0">
+
+          <!-- Left: Logo + name -->
+          <div class="flex-1 flex items-center gap-x-4">
+            <a href="/" class="select-none flex items-center gap-2 shrink-0">
+              <span class="sr-only">Moydus home page</span>
+              <img src="/logo/light.svg" alt="Moydus" class="h-6 w-auto block dark:hidden object-contain" />
+              <img src="/logo/dark.svg" alt="Moydus" class="h-6 w-auto hidden dark:block object-contain" />
+              <span class="font-semibold text-gray-900 dark:text-white text-[15px] tracking-tight">Moydus</span>
+            </a>
+          </div>
+
+          <!-- Center: Search -->
+          <div class="relative hidden lg:flex items-center flex-1 z-20 justify-center">
+            <div class="w-full max-w-sm">
+              <SearchBar client:load />
+            </div>
+          </div>
+
+          <!-- Right: Nav links + theme toggle -->
+          <div class="hidden lg:flex flex-1 items-center gap-2 justify-end">
+            <nav aria-label="Main" class="text-sm">
+              <ul class="flex gap-1 items-center">
+                <li class="navbar-link">
+                  <a
+                    href="mailto:support@moydus.com"
+                    class="flex items-center whitespace-nowrap font-medium gap-2 text-gray-800 dark:text-gray-50 hover:text-gray-800 dark:hover:text-gray-50 bg-gray-950/[0.03] dark:bg-white/[0.03] hover:bg-gray-950/10 dark:hover:bg-white/10 rounded-xl px-[14px] py-2 transition-colors text-sm"
+                  >
+                    <span class="min-w-0 truncate">Support</span>
+                  </a>
+                </li>
+                <li class="navbar-link">
+                  <a
+                    href="https://moydus.com"
+                    target="_blank"
+                    class="flex items-center whitespace-nowrap font-medium gap-2 text-white bg-[#ff4d00] hover:bg-[#e04400] rounded-xl px-[14px] py-2 transition-colors text-sm"
+                  >
+                    <span class="min-w-0 truncate">Get started</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+
+            <!-- Dark mode toggle -->
+            <button
+              id="theme-toggle"
+              class="group p-2 flex items-center justify-center w-[30px] h-[30px] rounded-full bg-gray-900/[0.04] dark:bg-white/10 hover:bg-gray-900/10 dark:hover:bg-white/20 transition-colors cursor-pointer"
+              aria-label="Toggle dark mode"
+            >
+              <!-- Sun icon (light mode) -->
+              <svg class="size-4 block dark:hidden text-gray-600 group-hover:text-gray-800" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1.5M12 19.5V21M4.219 4.219l1.061 1.061M17.72 17.72l1.06 1.06M3 12h1.5M19.5 12H21M4.219 19.781l1.061-1.061M17.72 6.28l1.06-1.061M12 7.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9z" />
+              </svg>
+              <!-- Moon icon (dark mode) -->
+              <svg class="size-4 hidden dark:block text-gray-300 group-hover:text-gray-100" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Mobile: search + ellipsis -->
+          <MobileActionButtons client:load />
+        </div>
+      </div>
+
+      <!-- Mobile nav toggle banner -->
+      {
+        pageTitle && (
+          <MobileNavToggle
+            pageTitle={pageTitle}
+            groupName={groupName}
+            client:load
+          />
+        )
+      }
+    </div>
+
+    <!-- Tab navigation row (desktop) -->
+    {
+      usingTabs && (
+        <div class="hidden lg:flex px-4 h-10">
+          <div class="nav-tabs h-full flex text-sm gap-x-6">
+            {tabs.map((tab) => (
+              <a
+                href={tab.href}
+                class:list={[
+                  'nav-tabs-item group relative h-full gap-2 flex items-center font-medium transition-colors',
+                  tab.isActive
+                    ? 'text-gray-900 dark:text-white [text-shadow:-0.2px_0_0_currentColor,0.2px_0_0_currentColor]'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200',
+                ]}
+                aria-current={tab.isActive ? 'location' : undefined}
+              >
+                {tab.name}
+                <div
+                  class:list={[
+                    'absolute bottom-0 h-px w-full left-0',
+                    tab.isActive
+                      ? 'bg-(--primary)'
+                      : 'group-hover:bg-gray-200 dark:group-hover:bg-gray-700',
+                  ]}
+                />
+              </a>
+            ))}
+          </div>
+        </div>
+      )
+    }
+  </div>
+</header>
+
+<script is:inline>
+  function initThemeToggle() {
+    const btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+    // Remove old listener by cloning
+    const fresh = btn.cloneNode(true);
+    btn.parentNode.replaceChild(fresh, btn);
+    fresh.addEventListener('click', function() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch(e) {}
+    });
+  }
+  // Run on initial load and after every Astro page navigation
+  document.addEventListener('astro:page-load', initThemeToggle);
+  initThemeToggle();
+</script>

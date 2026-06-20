@@ -1,0 +1,41 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "Moydus Documentation",
+  "theme": "mint",
+  "colors": {
+    "primary": "#ff4d00",
+    "light": "#ff4d00",
+    "dark": "#ff4d00"
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Docs",
+        "groups": [
+          {
+            "group": "Getting started",
+            "pages": ["index", "quickstart", "customization"]
+          },
+          {
+            "group": "Content",
+            "pages": ["components", "guides/example"]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Documentation",
+          "href": "https://docs.moydus.com",
+          "icon": "book-open-cover"
+        },
+        {
+          "anchor": "Blog",
+          "href": "https://moydus.com/blog",
+          "icon": "newspaper"
+        }
+      ]
+    }
+  }
+}

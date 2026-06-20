@@ -1,0 +1,30 @@
+@import "./code.css";
+
+@theme {
+  --color-primary: rgb(255, 77, 0);
+  --color-primary-light: rgb(255, 237, 230);
+  --color-primary-dark: rgb(200, 50, 0);
+  --color-tooltip-foreground: rgb(255, 255, 255);
+  --color-background-dark: rgb(14, 14, 15);
+}
+
+@layer base {
+  html {
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+@utility border-standard {
+  border-width: 1px;
+  border-color: rgb(229 231 235 / 70%);
+
+  &:is(.dark *) {
+    border-color: rgb(255 255 255 / 10%);
+  }
+}
+
+@utility overflow-wrap-anywhere {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}

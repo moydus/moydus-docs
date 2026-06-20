@@ -1,0 +1,43 @@
+@import 'tailwindcss';
+@source "../mintlify-components";
+@plugin "@tailwindcss/typography";
+@plugin "../mintlify-components/plugins/bg-grid.ts";
+@plugin "../mintlify-components/plugins/scrollbar.ts";
+@import './color-scheme.css';
+@import '../mintlify-components/styles.css';
+@import './typography.css';
+@import './prose.css';
+@import './prose-components.css';
+@import './kbd.css';
+
+:root {
+  --primary: #ff4d00;
+  --color-primary: #ff4d00;
+}
+
+.dark p,
+.dark li,
+.dark td,
+.dark th,
+.dark blockquote {
+  color: rgb(229 231 235);
+}
+
+.dark :is(h1, h2, h3, h4, h5, h6) {
+  color: rgb(255 255 255);
+}
+
+@theme {
+  --animate-dot-bounce: dot-bounce 1.4s ease-in-out infinite;
+
+  @keyframes dot-bounce {
+    0%,
+    20%,
+    100% {
+      transform: translateY(0);
+    }
+    10% {
+      transform: translateY(2px);
+    }
+  }
+}
