@@ -8,7 +8,8 @@ interface Props {
   description?: string;
 }
 
-const { title = 'Mintlify Docs', description } = Astro.props;
+const { title = 'Moydus Docs', description } = Astro.props;
+const fullTitle = title.includes('Moydus') ? title : `${title} | Moydus`;
 ---
 
 <!doctype html>
@@ -36,7 +37,7 @@ const { title = 'Mintlify Docs', description } = Astro.props;
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    <title>{fullTitle}</title>
     {description && <meta name="description" content={description} />}
     <ClientRouter />
   </head>

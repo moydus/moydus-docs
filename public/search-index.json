@@ -1,0 +1,58 @@
+[
+  {
+    "siteId": "docfiy-ornek",
+    "path": "/",
+    "title": "Introduction",
+    "description": "Welcome to the new home for your documentation, built with Mintlify and Astro",
+    "content": "Set up Your documentation site is ready. This starter combines Mintlify's components and content tools with the flexibility of Astro, so you have full control over your docs. Set up your dev environment and add your first page. Make it yours Configure navigation, colors, and layouts. See the available components in action. A sample page showing components used together. Full reference for components, configuration, and features.",
+    "icon": "hashtag",
+    "breadcrumbs": [
+      "Index"
+    ]
+  },
+  {
+    "siteId": "docfiy-ornek",
+    "path": "/quickstart",
+    "title": "Quickstart",
+    "description": "Set up your development environment and add your first page",
+    "content": "Set up your environment From the project root, install the required packages: Run the Astro development server: Open the URL shown in your terminal usually to see your site. Open in your editor and make a change. You'll see changes in your local preview. Project structure Your content lives in the directory: | Path | Purpose | | | | | | Documentation pages written in MDX. | | | Configuration for navigation and site metadata. | | | Images referenced from your pages. | | | Astro layouts, components, and styles you can customize. | Add a new page Create a new file in the directory. For example, : Open and add the page path without the extension to the relevant navigation group: Deploy Push your changes to GitHub. If your hosting is configured to build on push, your site deploys automatically. To build the site locally: The output goes to the directory. Next steps Configure navigation, colors, and layout. See the available components.",
+    "icon": "hashtag",
+    "breadcrumbs": [
+      "Quickstart"
+    ]
+  },
+  {
+    "siteId": "docfiy-ornek",
+    "path": "/customization",
+    "title": "Customize your site",
+    "description": "Understand what docs.json controls and how to style your custom frontend",
+    "content": "This starter uses a custom Astro frontend with Mintlify's content tools and components. Because the frontend is yours, not every configuration option from the full Mintlify reference https://mintlify.com/docs/organize/settings applies. What controls: Navigation structure, page metadata, and content configuration. What you control: Styling, layouts, and how your site renders. These live in your Astro project under . If a option doesn't seem to have any effect, it likely isn't wired up in the Astro frontend. Check the templates in to see how configuration values are consumed, and adjust there. Navigation Construct the navigation for your documentation in . Page paths are relative to the directory without the extension. Use forward slashes for nested pages. For example, . Site metadata Set a site name and other metadata in . Whether these values take effect depends on how the Astro templates in reference them. Styling and layouts Since this is a custom Astro project, you have direct control over how your site looks: | Path | What it controls | | | | | | Page layout templates. | | | Global CSS and Tailwind configuration. | | | Custom Astro and React components. | To change colors, fonts, spacing, or other visual properties, edit the files in directly rather than relying on values like or . Changes to files in take effect immediately when the dev server is running.",
+    "icon": "hashtag",
+    "breadcrumbs": [
+      "Customization"
+    ]
+  },
+  {
+    "siteId": "docfiy-ornek",
+    "path": "/components",
+    "title": "Components",
+    "description": "Available Mintlify components for building documentation pages",
+    "content": "Mintlify components work directly in your MDX files without imports. This page shows each component rendered so you can see what's available. For all available components, see the Mintlify documentation https://mintlify.com/docs/components . Cards Use cards to link to related content or highlight key actions. Get your dev environment set up in minutes. Use to arrange cards in a grid: Cards can contain short descriptions. Arrange cards in columns for scannability. Accordions Use accordions to collapse content that isn't needed on every visit. Pages are written in MDX, which combines Markdown with JSX components. No. Mintlify components are available globally in all MDX files. Steps Use steps for sequential instructions. Add a new file to the directory. Include and in the YAML frontmatter. Add the page path to . Tabs Use tabs to present alternative content in the same space. Code blocks Fenced code blocks support syntax highlighting and titles. Group related code blocks with : Callouts Use callouts to draw attention to specific information. Notes provide additional context that's helpful but not critical. Tips suggest best practices or useful shortcuts. Warnings flag potential problems or destructive actions.",
+    "icon": "hashtag",
+    "breadcrumbs": [
+      "Components"
+    ]
+  },
+  {
+    "siteId": "docfiy-ornek",
+    "path": "/guides/example",
+    "title": "Example guide: Setting up authentication",
+    "description": "A sample guide showing how a typical documentation page looks",
+    "content": "This is a sample documentation page. It demonstrates how to combine prose, steps, code blocks, and callouts into a realistic guide. Prerequisites Before you begin, make sure you have: A running instance of the application An API key from the dashboard Keep your API key secret. Never commit it to version control or expose it in client side code. Configure authentication Add the authentication SDK to your project: Create an auth client with your API key: Use the middleware to require authentication: Verify it works After completing the setup, test that authentication is working: A successful response returns your user data: Common issues Check that your environment variable is set and matches the key in your dashboard. The default session duration is 24 hours. You can extend it in the client configuration: Next steps See all available components for your pages. Configure your site's look and feel.",
+    "icon": "hashtag",
+    "breadcrumbs": [
+      "Guides",
+      "Example"
+    ]
+  }
+]

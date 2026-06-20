@@ -7,6 +7,10 @@ dist/
 # generated content (fetched from Mintlify API)
 .mintlify/
 
+# build-time search artifacts
+.search-index-build.json
+db/seed.sql
+
 # dependencies
 node_modules/
 

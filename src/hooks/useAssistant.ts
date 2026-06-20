@@ -1,13 +1,30 @@
-import { useChat } from '@ai-sdk/react';
-import { DefaultChatTransport } from 'ai';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCompletion } from '@ai-sdk/react';
+import type { UIMessage } from '@ai-sdk/react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import useMessagesStore from './useMessagesStore';
 
 const AI_API_URL = import.meta.env.PUBLIC_AI_API_URL ?? '/api/chat';
 
+function toUserMessage(text: string): UIMessage {
+  return {
+    id: crypto.randomUUID(),
+    role: 'user',
+    parts: [{ type: 'text', text }],
+  };
+}
+
+function toAssistantMessage(text: string): UIMessage {
+  return {
+    id: 'assistant-active',
+    role: 'assistant',
+    parts: [{ type: 'text', text }],
+  };
+}
+
 export const useAssistant = () => {
   const isClearedRef = useRef(false);
   const [input, setInput] = useState('');
+  const [history, setHistory] = useState<UIMessage[]>([]);
 
   const { threadId, setThreadId, threadKey, setThreadKey } = useMessagesStore();
 
@@ -18,17 +35,17 @@ export const useAssistant = () => {
     setThreadKey(undefined);
   }, []);
 
-  const { messages, sendMessage, status, setMessages, stop } = useChat({
-    id: 'moydus-assistant',
-    transport: new DefaultChatTransport({
-      api: AI_API_URL,
-      prepareSendMessagesRequest: ({ messages }) => {
-        return {
-          body: { messages },
-        };
-      },
-    }),
+  const { completion, complete, isLoading, stop, setCompletion } = useCompletion({
+    api: AI_API_URL,
+    streamProtocol: 'text',
   });
+
+  const status = isLoading ? 'streaming' : 'ready';
+
+  const messages = useMemo(() => {
+    if (!completion) return history;
+    return [...history, toAssistantMessage(completion)];
+  }, [history, completion]);
 
   useEffect(() => {
     useMessagesStore.setState({ messages });
@@ -38,26 +55,49 @@ export const useAssistant = () => {
     useMessagesStore.setState({ status });
   }, [status]);
 
-  const isLoading = status === 'streaming' || status === 'submitted';
-
   const onClear = useCallback(() => {
     isClearedRef.current = true;
     stop();
-    setMessages([]);
+    setHistory([]);
+    setCompletion('');
     setInput('');
     setThreadId(undefined);
     setThreadKey(undefined);
     sessionStorage.removeItem('assistant-threadKey');
     sessionStorage.removeItem('assistant-threadId');
     useMessagesStore.setState({ messages: [] });
-  }, [stop, setMessages, setThreadId, setThreadKey]);
+  }, [stop, setCompletion, setThreadId, setThreadKey]);
 
-  const handleSubmit = useCallback(() => {
-    if (!input.trim() || status !== 'ready') return;
+  const handleSubmit = useCallback(async () => {
+    const text = input.trim();
+    if (!text || isLoading) return;
+
     isClearedRef.current = false;
-    sendMessage({ text: input });
+    const userMessage = toUserMessage(text);
+    const nextHistory = [...history, userMessage];
+    setHistory(nextHistory);
     setInput('');
-  }, [input, status, sendMessage]);
+    setCompletion('');
+
+    await complete(text, {
+      body: {
+        messages: nextHistory.map((m) => ({
+          role: m.role,
+          content: m.parts
+            .filter((p) => p.type === 'text')
+            .map((p) => ('text' in p ? p.text : ''))
+            .join(''),
+        })),
+      },
+    });
+  }, [input, isLoading, history, complete, setCompletion]);
+
+  useEffect(() => {
+    if (!isLoading && completion && !isClearedRef.current) {
+      setHistory((prev) => [...prev, toAssistantMessage(completion)]);
+      setCompletion('');
+    }
+  }, [isLoading, completion, setCompletion]);
 
   return {
     input,
@@ -65,7 +105,7 @@ export const useAssistant = () => {
     handleSubmit,
     setInput,
     messages,
-    setMessages,
+    setMessages: setHistory,
     isLoading,
     onClear,
     stop,
